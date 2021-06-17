@@ -6,10 +6,15 @@ services:
     image: mborne/jenkins-slave
     build: .
     environment:
+      - "JENKINS_URL=${JENKINS_URL}"
       - "JENKINS_USERNAME=${JENKINS_USERNAME}"
       - "JENKINS_PASSWORD=${JENKINS_PASSWORD}"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:rw
+    # TODO : avoid this (jenkins.localhost retreived by agent.jar)
+    extra_hosts:
+      # resolve as traefik
+      - "jenkins.localhost:172.80.1.1"
     restart: unless-stopped
 
 networks:
